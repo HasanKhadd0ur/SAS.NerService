@@ -7,3 +7,4 @@ app = Flask(__name__)
 # app.register_blueprint(ner_bp, url_prefix="/ner")
 if __name__ == "__main__":
     app.run(debug=True)
+    
