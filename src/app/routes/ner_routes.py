@@ -8,6 +8,6 @@ ner_bp = Blueprint('ner', __name__)
 ner_service = NERService()
 @ner_bp.route('/extract', methods=['POST'])
 def extract():
-    data = request.get_data()
+    data = request.get_data(as_text=True)
     result = ner_service.extract_ner(data)
     return jsonify(result)
