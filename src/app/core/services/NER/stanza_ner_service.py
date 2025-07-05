@@ -1,17 +1,16 @@
+from app.core.services.NER.ner_service_base import NERService
 from app.core.configs.base_config import BaseConfig
 from app.core.models.named_entity import NamedEntity
 from typing import List
 import stanza
 
 
-class StanzaNERService:
+class StanzaNERService(NERService):
 
     # Static flag to avoid repeated setup
     _pipeline_initialized = False 
     
     def __init__(self, config :BaseConfig):
-        
-        super(config)
         
         try:
             if not StanzaNERService._pipeline_initialized:
