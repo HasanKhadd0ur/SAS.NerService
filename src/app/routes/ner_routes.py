@@ -1,11 +1,12 @@
 from flask import Blueprint, request, jsonify
+from app.core.factory.services_factory import get_ner_service
+from app.core.factory.services_registry import ServicesRegistry
 
-from app.core.services.stanza_ner_service import NERService
 
 ner_bp = Blueprint('ner', __name__)
 
+ner_service = get_ner_service("stanza")
 
-ner_service = NERService()
 @ner_bp.route('/extract', methods=['POST'])
 def extract():
     data = request.get_data(as_text=True)
