@@ -1,21 +1,25 @@
+from app.core.configs.base_config import BaseConfig
+from app.core.models.named_entity import NamedEntity
 from typing import List
 import stanza
-import os
-
-from app.core.models.named_entity import NamedEntity
 
 
-class NERService:
-    _pipeline_initialized = False  # 👈 Static flag to avoid repeated setup
+class StanzaNERService:
 
-    def __init__(self):
+    # Static flag to avoid repeated setup
+    _pipeline_initialized = False 
+    
+    def __init__(self, config :BaseConfig):
+        
+        super(config)
+        
         try:
-            if not NERService._pipeline_initialized:
-                # 👇 Optional: Set custom model dir to persist download
+            if not StanzaNERService._pipeline_initialized:
+                # Todo Set custom model dir to persist download
                 stanza.download('ar', processors='tokenize,ner', verbose=False)  # download once
-                NERService._pipeline_initialized = True
+                StanzaNERService._pipeline_initialized = True
 
-            # 👇 Use global NLP instance to save memory if needed
+            # Use global NLP instance to save memory if needed
             self.nlp = stanza.Pipeline(lang='ar', processors='tokenize,ner', use_gpu=False)
         except Exception as e:
             raise RuntimeError(f"Failed to load Stanza NER pipeline: {e}")

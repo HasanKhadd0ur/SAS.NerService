@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 
-from app.core.services.ner_service import NERService
+from app.core.services.stanza_ner_service import NERService
 
 ner_bp = Blueprint('ner', __name__)
 
