@@ -5,10 +5,14 @@ pipeline {
         PYTHONUNBUFFERED = 1
     }
 
+    parameters {
+        booleanParam(name: 'RUN_SERVER', defaultValue: false, description: 'Run the Flask NER server')
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/hasanKhadd0ur/sas.nerservice.git'
+                git branch: 'main', url: 'https://github.com/hasanKhadd0ur/sas.nerservice.git'
             }
         }
 
@@ -43,9 +47,5 @@ pipeline {
                 '''
             }
         }
-    }
-
-    parameters {
-        booleanParam(name: 'RUN_SERVER', defaultValue: false, description: 'Run the Flask NER server')
     }
 }
