@@ -21,8 +21,12 @@ pipeline {
                 bat '''
                 python -m venv venv
                 call venv\\Scripts\\activate
-                pip install --upgrade pip
-                pip install -r requirements.txt
+                python -m pip install --upgrade pip
+                if exist requirements.txt (
+                    python -m pip install -r requirements.txt
+                ) else (
+                    echo No requirements.txt found!
+                )
                 '''
             }
         }
@@ -31,7 +35,12 @@ pipeline {
             steps {
                 bat '''
                 call venv\\Scripts\\activate
-                pytest tests/
+                if exist src\\tests (
+                    pytest src\\tests
+                ) else (
+                    echo No test directory found at src\\tests
+                    exit /b 1
+                )
                 '''
             }
         }
@@ -43,7 +52,7 @@ pipeline {
             steps {
                 bat '''
                 call venv\\Scripts\\activate
-                python run.py
+                python src\\app\\run.py
                 '''
             }
         }
