@@ -6,19 +6,17 @@ import stanza
 
 
 class StanzaNERService(NERService):
-
     # Static flag to avoid repeated setup
     _pipeline_initialized = False 
     
-    def __init__(self, config :BaseConfig):
-        
+    def __init__(self, config: BaseConfig):
         try:
             if not StanzaNERService._pipeline_initialized:
-                # Todo Set custom model dir to persist download
-                stanza.download('ar', processors='tokenize,ner', verbose=False)  # download once
+                # Download the Arabic models if not already downloaded
+                stanza.download('ar', processors='tokenize,ner', verbose=False)
                 StanzaNERService._pipeline_initialized = True
 
-            # Use global NLP instance to save memory if needed
+            # Initialize the Stanza pipeline
             self.nlp = stanza.Pipeline(lang='ar', processors='tokenize,ner', use_gpu=False)
         except Exception as e:
             raise RuntimeError(f"Failed to load Stanza NER pipeline: {e}")
@@ -30,7 +28,10 @@ class StanzaNERService(NERService):
 
             for sentence in doc.sentences:
                 for entity in sentence.ents:
-                    entities.append(NamedEntity(entity.text, entity.type))
+                    # Filter out entities with type "OTHER"
+                    if entity.type != "OTHER":
+                        entities.append(NamedEntity(entity.text, entity.type))
+
             return entities
         except Exception as e:
             raise RuntimeError(f"NER location extraction failed: {e}")

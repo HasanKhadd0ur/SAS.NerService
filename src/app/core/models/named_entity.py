@@ -4,6 +4,6 @@ import string
 
 @dataclass 
 class NamedEntity: 
-    entity_name :string 
+    text :string 
     type: string 
     
