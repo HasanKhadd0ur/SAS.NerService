@@ -17,19 +17,22 @@ pipeline {
         }
 
         stage('Set up Python venv') {
-            steps {
-                bat '''
-                python -m venv venv
-                call venv\\Scripts\\activate
-                python -m pip install --upgrade pip
-                if exist requirements.txt (
-                    python -m pip install -r requirements.txt
-                ) else (
-                    echo No requirements.txt found!
-                )
-                '''
-            }
+        steps {
+            bat '''
+            where python
+            python --version || exit /b 1
+            python -m venv venv || exit /b 1
+            call venv\\Scripts\\activate
+            python -m pip install --upgrade pip
+            if exist requirements.txt (
+                python -m pip install -r requirements.txt
+            ) else (
+                echo No requirements.txt found!
+            )
+            '''
         }
+        }
+
 
         stage('Run Tests') {
             steps {
