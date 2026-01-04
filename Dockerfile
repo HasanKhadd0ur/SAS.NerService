@@ -15,8 +15,8 @@ RUN pip install --upgrade pip && \
 # Copy source code
 COPY . .
 
-# Expose Flask default port
-EXPOSE 5000
+# Expose Flask port 5100
+EXPOSE 5100
 
 # Set entrypoint
 CMD ["python", "src/app/main.py"]
